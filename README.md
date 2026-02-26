@@ -63,7 +63,7 @@ Clones ComfyUI, creates a local virtual environment, and installs all dependenci
 ### 4. Update ComfyUI
 
 ```bash
-cd `Update Scripts/`
+cd Update\ Scripts
 ```
 ```bash
 ./update-comfyui.sh
@@ -72,7 +72,7 @@ cd `Update Scripts/`
 ### 5. Update PyTorch (Nightly)
 
 ```bash
-cd `Update Scripts/`
+cd Update\ Scripts
 ```
 ```bash
 ./update-torch.sh
