@@ -14,7 +14,7 @@ Automated setup, local virtual environment, and nightly PyTorch — zero hassle.
 </div>
 
 ---
-
+<video controls src="Video Tutorial/Tutorial-H265.mp4" title="Title"></video>
 ## 📁 Project Structure
 
 ```
