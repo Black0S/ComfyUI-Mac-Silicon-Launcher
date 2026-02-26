@@ -42,6 +42,9 @@ Notes techniques
   - installe ensuite les dépendances du projet dans le `venv` :
     `./comfyui/.venv/bin/python -m pip install -r comfyui/requirements.txt`
 
+  - clone (ou met à jour) `ComfyUI-Manager` dans `comfyui/custom_nodes` :
+    `git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui/custom_nodes/comfyui-manager`
+
 - `launch.sh` :
   - utilise `./comfyui/.venv/bin/python` pour exécuter `comfyui/main.py` (transmet les arguments)
 

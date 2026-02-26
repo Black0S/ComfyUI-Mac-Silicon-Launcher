@@ -26,6 +26,17 @@ else
   git clone "$REPO_URL" "$REPO_DIR"
 fi
 
+echo "==> Installation de ComfyUI-Manager dans $REPO_DIR/custom_nodes"
+CUSTOM_NODES_DIR="$REPO_DIR/custom_nodes"
+MANAGER_DIR="$CUSTOM_NODES_DIR/comfyui-manager"
+mkdir -p "$CUSTOM_NODES_DIR"
+if [ -d "$MANAGER_DIR/.git" ]; then
+  echo "ComfyUI-Manager existe déjà, mise à jour..."
+  git -C "$MANAGER_DIR" pull --rebase
+else
+  git clone https://github.com/ltdrdata/ComfyUI-Manager "$MANAGER_DIR"
+fi
+
 echo "==> Création / réutilisation d'un virtualenv dans $VENV_DIR"
 if [ -d "$VENV_DIR" ]; then
   echo "Virtualenv existant trouvé, réutilisation."
