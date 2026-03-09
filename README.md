@@ -140,7 +140,7 @@ The entire `comfyui/` folder (including `.venv`) can be moved to another Apple S
 
 | Requirement | Notes |
 |---|---|
-| Apple Silicon Mac | M1 / M2 / M3 / M4 series |
+| Apple Silicon Mac | M1 / M2 / M3 / M4 / M5 series |
 | macOS 13 Ventura+ | Recommended |
 | [Homebrew](https://brew.sh) | Must be installed manually before running `install.sh` |
 | Internet Connection | Required during install & update steps |
