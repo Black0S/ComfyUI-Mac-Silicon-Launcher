@@ -1,149 +1,182 @@
-# ComfyUI Mac Silicon Launcher
+# Comfy-Launcher-MultiOS
 
-<div align="center">
-
-![macOS](https://img.shields.io/badge/macOS-Apple_Silicon-black?style=for-the-badge&logo=apple&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-Nightly-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![ComfyUI](https://img.shields.io/badge/ComfyUI-Latest-4B8BBE?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-
-**A streamlined launcher for running ComfyUI natively on Apple Silicon Macs.**  
-Automated setup, local virtual environment, and nightly PyTorch — zero hassle.
-
-</div>
+A set of shell scripts to install, launch, update, and manage [ComfyUI](https://github.com/comfyanonymous/ComfyUI) on Linux and MacOS, with multi-OS support, Python version selection, and a clean terminal interface.
 
 ---
-<video controls src="Video Tutorial/Tutorial-H265.mp4" title="Title"></video>
-## 📁 Project Structure
 
-```
-comfyui-mac-launcher/
-├── comfyui/                    # ComfyUI clone target directory
-├── install.sh                  # Dependency checker & full installer
-├── launch.sh                   # ComfyUI launcher (uses local venv)
-└── Update Scripts/
-    ├── update-comfyui.sh       # Pull latest ComfyUI changes
-    └── update-torch.sh         # Upgrade to latest nightly PyTorch
-```
+## ✨ Features
+
+- 🖥️ **Multi-OS support** — Fedora/RHEL, Arch Linux, Ubuntu/Debian, macOS
+- 🐍 **Python version selection** — Choose between 3.12, 3.13, or 3.14 at install time
+- ⚡ **Automatic CUDA detection** — PyTorch installed with the right backend for your hardware
+- 🔀 **Python switcher** — Switch the venv Python version without reinstalling ComfyUI
+- 📊 **System info dashboard** — Full diagnostic display in a clean terminal UI
+- 🚀 **Smart launcher** — Auto-detects GPU and applies the right flags
+
+---
+
+## 📁 Scripts Overview
+
+| Script | Description |
+|---|---|
+| `install.sh` | Full installation: OS deps, Python, ComfyUI, ComfyUI-Manager, venv, PyTorch |
+| `launch.sh` | Launch ComfyUI using the installed venv |
+| `update-comfyui.sh` | Pull latest ComfyUI commits and update venv dependencies |
+| `update-torch.sh` | Update PyTorch to the latest version in the venv |
+| `switchpy.sh` | Switch the venv to a different Python version (3.12 / 3.13 / 3.14) |
+| `info.sh` | Display a full system diagnostic: OS, CPU, RAM, GPU, CUDA, Python, PyTorch, ComfyUI |
 
 ---
 
 ## 🚀 Quick Start
 
-### 0. Clone or Download this Repo
+### 1. Clone this repository
 
 ```bash
-git clone <this-repo-url>
-cd <repo-folder>
+git clone https://github.com/your-username/Comfy-Launcher-MultiOS.git
+cd Comfy-Launcher-MultiOS
 ```
 
-### 1. Make Scripts Executable
+### 2. Make scripts executable
 
 ```bash
-chmod +x install.sh launch.sh "Update Scripts/update-comfyui.sh" "Update Scripts/update-torch.sh"
+chmod +x *.sh
 ```
 
-`To execute .sh scripts you need to be where there are.`
-
-### 2. Run the Installer
-
-Clones ComfyUI, creates a local virtual environment, and installs all dependencies:
+### 3. Run the installer
 
 ```bash
 ./install.sh
 ```
 
-### 3. Launch ComfyUI
+You will be prompted to select:
+- Your **operating system**
+- Your **Python version** (3.12 / 3.13 / 3.14)
+
+The installer will then:
+- Check and install `git` if missing
+- Check and install the selected Python version if missing
+- Clone ComfyUI and ComfyUI-Manager
+- Create a virtual environment
+- Install PyTorch with the right backend (CUDA on Linux, MPS nightly on macOS)
+- Install all ComfyUI dependencies
+
+### 4. Launch ComfyUI
 
 ```bash
 ./launch.sh
 ```
 
-### 4. Update ComfyUI
+Open your browser at: **http://127.0.0.1:8188**
+
+---
+
+## 🐍 Python Version Guide
+
+| Version | Status | Notes |
+|---|---|---|
+| **3.12** | ⚠️ Older | Maximum compatibility with custom nodes |
+| **3.13** | ✅ Recommended | Compatible with the vast majority of custom nodes |
+| **3.14** | 🧪 Experimental | Some custom nodes may not work |
+
+---
+
+## 🔀 Switching Python Version
+
+To switch the Python version used by ComfyUI without reinstalling everything from scratch:
 
 ```bash
-cd Update\ Scripts
+./switchpy.sh
 ```
+
+The script will:
+- Display the **currently active Python version** (highlighted in yellow)
+- Let you choose a new version
+- Check and install it if not present on your system
+- Delete the old virtual environment
+- Recreate a clean one with the new Python version
+- Reinstall PyTorch and all ComfyUI dependencies automatically
+
+---
+
+## 🔄 Updating
+
+### Update ComfyUI
+
 ```bash
 ./update-comfyui.sh
 ```
 
-### 5. Update PyTorch (Nightly)
+Pulls the latest commits from the ComfyUI repository and updates all venv dependencies.
 
-```bash
-cd Update\ Scripts
-```
+> ComfyUI-Manager updates itself from within the ComfyUI interface.
+
+### Update PyTorch
+
 ```bash
 ./update-torch.sh
 ```
 
----
-
-## 🌐 Access & Shutdown
-
-**Web Interface** — Once ComfyUI is running, open your browser at: http://127.0.0.1:8188
-
-**Startup Time** — First launch may take longer depending on your machine's specs and initialization time. Please be patient.
-
-**Clean Shutdown** — To ensure ComfyUI is fully stopped:
-
-1. Close the terminal running `launch.sh`
-2. Open **Activity Monitor** (`Applications → Utilities → Activity Monitor`)
-3. Search for any remaining `python` processes and terminate them if needed
+Reinstalls the latest version of PyTorch in the venv, for your OS and hardware.
 
 ---
 
-## 🔧 Technical Details
+## 📊 System Info
 
-### `install.sh`
-- Verifies **Homebrew** is installed (exits with instructions if not)
-- Installs `python@3.13` via Homebrew if not already present
-- Clones or updates [ComfyUI](https://github.com/comfyanonymous/ComfyUI) into `./comfyui`
-- Creates or reuses a local virtualenv at `./comfyui/.venv`
-- Upgrades `pip` inside the venv, then installs **nightly PyTorch + torchvision** (CPU):
-  ```bash
-  ./comfyui/.venv/bin/python -m pip install --pre torch torchvision \
-    --index-url https://download.pytorch.org/whl/nightly/cpu
-  ```
-- Installs ComfyUI's Python dependencies:
-  ```bash
-  ./comfyui/.venv/bin/python -m pip install -r comfyui/requirements.txt
-  ```
-- Clones or updates [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager) into `comfyui/custom_nodes/`
+```bash
+./info.sh
+```
 
-### `launch.sh`
-- Uses `./comfyui/.venv/bin/python` to run `comfyui/main.py`
-- Forwards any additional arguments passed to the script
+Displays a full diagnostic dashboard in the terminal:
 
-### `Update Scripts/update-comfyui.sh`
-- Fetches and rebases the latest ComfyUI commits (`fetch + pull --rebase`)
-- Updates any git submodules if present
-- Reinstalls project dependencies in the local venv
-
-### `Update Scripts/update-torch.sh`
-- Verifies the `comfyui/` directory and local venv exist
-- Upgrades `pip` inside the venv
-- Installs the latest **nightly build** of PyTorch and torchvision (CPU)
+- 🖥️ **System** — OS, kernel, CPU, RAM
+- ⚡ **GPU / CUDA** — GPU name, VRAM, driver version, CUDA toolkit
+- 🐍 **Python** — All versions installed on the system, with the ComfyUI venv version highlighted
+- 🔥 **PyTorch** — Version, CUDA/MPS availability, GPU seen by PyTorch
+- 🎨 **ComfyUI** — Branch, commit, date, ComfyUI-Manager status
 
 ---
 
-## 📦 Portability
+## 📋 Requirements
 
-The entire `comfyui/` folder (including `.venv`) can be moved to another Apple Silicon Mac.
+### Linux
+- `bash` 4.0+
+- A package manager: `dnf`, `pacman`, or `apt`
+- NVIDIA GPU with drivers installed *(recommended)*
+- CUDA runtime *(optional — PyTorch works without `nvcc`)*
 
-> **Note:** Ensure `python3.13` is available on the target machine if you need to recreate the venv. For maximum portability, simply run `./install.sh` on the new machine — it will handle everything from scratch.
+### macOS
+- `bash` 4.0+ (`brew install bash` if needed)
+- [Homebrew](https://brew.sh)
+- Apple Silicon recommended for MPS acceleration
 
 ---
 
-## ✅ Requirements
+## 📂 Directory Structure
 
-| Requirement | Notes |
-|---|---|
-| Apple Silicon Mac | M1 / M2 / M3 / M4 / M5 series |
-| macOS 13 Ventura+ | Recommended |
-| [Homebrew](https://brew.sh) | Must be installed manually before running `install.sh` |
-| Internet Connection | Required during install & update steps |
+After installation, the following structure will be created next to the scripts:
+
+```
+.
+├── install.sh
+├── launch.sh
+├── update-comfyui.sh
+├── update-torch.sh
+├── switchpy.sh
+├── info.sh
+└── comfyui/                  ← ComfyUI repository
+    ├── .venv/                ← Python virtual environment
+    ├── main.py
+    ├── requirements.txt
+    └── custom_nodes/
+        └── comfyui-manager/  ← ComfyUI-Manager
+```
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
@@ -153,8 +186,4 @@ This project is released under the [MIT License](LICENSE).
 
 ---
 
-<div align="center">
-
-Made with ❤️ for the Apple Silicon community
-
-</div>
+> **ComfyUI** is developed by [@comfyanonymous](https://github.com/comfyanonymous/ComfyUI) — this project is an independent launcher and is not officially affiliated with ComfyUI.
